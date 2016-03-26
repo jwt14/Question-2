@@ -1,28 +1,26 @@
 #   HPC Q2 
 #   Created by Jan Witold Tomaszewski CID: 00833865
-
 import subprocess
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi,sin,exp
-#Any of these parameters can be changed by user
 
-L = 1
-N_x = 10
+
+
+L = 1                                   #Any of these parameters can be changed by user
+N_x = 20
 T = 1
-N_t = 10000
-d_t = T/float(N_t)                              #Be careful! Integers could yield 0
-d_x = L/float(N_x)
-theta = 0
+N_t = 1000
+d_t = T/float(N_t)                                      #Be careful! Integers could yield 0
+#d_x = L/float(N_x)
+theta = 0.5
 alpha = 1
-heat_mid = np.array(sin(pi*0.5*L))               #Operatre on Numpy arrays for maximum efficiency
-heat_analytic = np.array(sin(pi*0.5*L))               #Operatre on Numpy arrays for maximum efficiency
+heat_mid = np.array(sin(pi*0.5/L))                      #Operatre on Numpy arrays for maximum efficiency
+heat_analytic = np.array(sin(pi*0.5/L))                 #Operatre on Numpy arrays for maximum efficiency
 time = np.linspace(0, 1, N_t+1)
 
-
-data = subprocess.Popen("./q2 {} {} {} {} {} {}".format(L, N_x, T, N_t, alpha, theta),
+data = subprocess.Popen("./q2 {} {} {} {} {}".format(L, N_x, T, N_t, alpha),
                         stdout=subprocess.PIPE).communicate()[0]
-
 a=data.split('\n')
 
 for i in range(1, N_t+1):
@@ -30,8 +28,10 @@ for i in range(1, N_t+1):
     heat_mid = np.append(heat_mid, b)
 
 for j in range(1, N_t+1):
-    c = sin(pi*0.5*L)*exp(-alpha*pi**2*j*d_t/L/L)
+    c = sin(pi*0.5/L)*exp(-alpha*pi**2*j*d_t/L/L)
     heat_analytic = np.append(heat_analytic, c)
+    
+
     
 fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
 axes[0].plot(time, heat_mid, 'r', linestyle=':', label="numerical", linewidth=5.00)
@@ -44,3 +44,7 @@ d = heat_analytic - heat_mid
 axes[1].plot(time, d, 'g', linewidth=2)
 axes[1].set_title("Absolute error evolution")
 axes[1].set_xlabel('Time (s)')
+
+fig.tight_layout()
+fig.savefig("Comparison.png")
+        
