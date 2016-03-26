@@ -3,6 +3,7 @@
 
 import subprocess
 import numpy as np
+import matplotlib.pyplot as plt
 
 #Any of these parameters can be changed by user
 L = 1
@@ -24,3 +25,18 @@ a=data.split('\n')
 for i in range(1, N_t+1):
     b = eval(a[int((0.5*N_x+1)*(2*i-1))])
     heat_mid = np.append(heat_mid, b)
+
+fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
+axes[0].plot(time, heat_mid, 'r')
+axes[0].set_xlabel('Time (s)')
+axes[0].set_ylabel('Temperature at the midpoint (K)')
+axes[0].set_title("Standard plot")
+
+axes[1].semilogy(time, heat_mid, 'b')
+axes[1].set_xlabel('Time (s)')
+axes[1].set_ylabel('Temperature at the midpoint (K)')
+axes[1].set_title("Semi-logarithmic plot")
+
+fig.tight_layout() 
+#axes.set_title("Forward Euler solution for x(1-x) conditions")
+fig.savefig("Comparison.png")
