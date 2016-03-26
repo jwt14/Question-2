@@ -46,9 +46,9 @@ TriMatrix MakeSpatialOpMatrix(int N_x){
 
  /*----------------------------- Printing and input-validating functions for both doubles and integers ----------------------------------------------------------------*/
 void print_vector(vector<double> U, const char vector_filename[128]){
-    ofstream output_file(vector_filename);
-    ostream_iterator<double> output_iterator(output_file, "\n");        //Final solution is saved as a text file
-    copy(U.begin(), U.end(), output_iterator);
+    //ofstream output_file(vector_filename);
+    //ostream_iterator<double> output_iterator(output_file, "\n");        //Final solution is saved as a text file
+    //copy(U.begin(), U.end(), output_iterator);
     int m = U.size();
     cout << "The final solution is:" << endl;                           //Final solution is printed to a terminal
     for (int i=0;i<m;++i){
@@ -83,23 +83,16 @@ void validating(int &vIn){
 }
 
 
-int main() {
-    /*----------------------------- Declaring variables and prompting for input with validation -----------------------------------------------------------------------*/
-    double L, T;
-    int N_x,N_t;
+int main(int argc, char* argv[]) {
 
-    cout << "\nLength of a domain = "; cin >> L; validating(L);
-    cout << "\nNumber of grid points (20, 30 etc): "; cin >> N_x; validating(N_x);      //only even number can be selected!
+	double L=atof(argv[1]);
+	int N_x=atoi(argv[2]);
+	double T=atof(argv[3]);
+	int N_t=atoi(argv[4]);
+	double alpha=atof(argv[5]);
     double del_x = L/(double(N_x));
-    cout << "\nSpatial step size (del_x) = " << del_x << endl;
-
-    cout << "\nTime of simulation = "; cin >> T; validating(T);
-    cout << "\nNumber of time steps: "; cin >> N_t; validating(N_t);
     double del_t = T/(double(N_t));
-    cout << "\nTime step size (del_x) = " << del_t << endl;
 
-    double alpha;
-    cout << "\nThermal conductivity (alpha) = "; cin >> alpha; validating(alpha);
     double nu = alpha*(del_t/pow(del_x,2));                                             //calculating Courant number
 
     /*----------------------------- Generating vectors with initial conditions ----------------------------------------------------------------------------------------*/
@@ -120,8 +113,7 @@ int main() {
     for(double k=0;k<N_t;++k){
         u = A * u_0;                                                                    //Implementing for loop with an overloaded vector-matrix multiplication
         u_0 = u;
+        print_vector(u,"FEsolution.dat");
     }
-    print_vector(u,"FEsolution.dat");
-
     return 0;
 }
