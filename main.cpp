@@ -12,7 +12,7 @@
 #include <fstream>
 #include <iterator>
 #include "TriMatrix.h"
-
+#define _USE_MATH_DEFINES
 using namespace std;
 /*----------------------------- Generating Identity and Tri-diagonal Spatial Matrices using help functions ------------------------------------------------------------*/
 TriMatrix MakeIdentityMatrix(int N_x){
@@ -45,12 +45,9 @@ TriMatrix MakeSpatialOpMatrix(int N_x){
 }
 
  /*----------------------------- Printing and input-validating functions for both doubles and integers ----------------------------------------------------------------*/
-void print_vector(vector<double> U, const char vector_filename[128]){
-    //ofstream output_file(vector_filename);
-    //ostream_iterator<double> output_iterator(output_file, "\n");        //Final solution is saved as a text file
-    //copy(U.begin(), U.end(), output_iterator);
+void print_vector(vector<double> U){
     int m = U.size();
-    cout << "The final solution is:" << endl;                           //Final solution is printed to a terminal
+    cout << "The solution is:" << endl;                           //Final solution is printed to a terminal
     for (int i=0;i<m;++i){
         cout << U[i] << endl;
     }
@@ -98,7 +95,7 @@ int main(int argc, char* argv[]) {
     /*----------------------------- Generating vectors with initial conditions ----------------------------------------------------------------------------------------*/
     vector<double> u_0, u;                                                              //u_0 stores initial heat distribution;
     for(int j=0; j<N_x+1; j++){                                                         //u stores heat at next full time step;
-         u_0.push_back(j*del_x-pow(j*del_x,2));                                         //u_CN stores heat at the intermediate step for Crank-Nicolson method.
+        u_0.push_back(sin(M_PI*j*del_x/L));
      }
 
     /*----------------------------- Generating Identity and Spatial triMatrices using help functions ------------------------------------------------------------------*/
@@ -113,7 +110,7 @@ int main(int argc, char* argv[]) {
     for(double k=0;k<N_t;++k){
         u = A * u_0;                                                                    //Implementing for loop with an overloaded vector-matrix multiplication
         u_0 = u;
-        print_vector(u,"FEsolution.dat");
+        print_vector(u);
     }
     return 0;
 }
