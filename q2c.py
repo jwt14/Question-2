@@ -6,11 +6,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import pi,sin,exp,sqrt
 
-L = 1                                   #Any of these parameters can be changed by user
+L = 1                                                                           #Any of these parameters can be changed by user
 N_x = range(20,2,-2)
 T = 1
 N_t = range(1000,3500,200)
-    #d_t = T/(N_t)                                      #Be careful! Integers could yield 0
+#d_t = T/(N_t)                                                                  #Be careful! Integers could yield 0
 #d_x = L/float(N_x)
 alpha = 1
     
