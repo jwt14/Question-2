@@ -32,19 +32,15 @@ for i in range(1, N_t+1):
 for j in range(1, N_t+1):
     c = sin(pi*0.5*L)*exp(-alpha*pi**2*j*d_t/L/L)
     heat_analytic = np.append(heat_analytic, c)
-
-
+    
 fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
-axes[0].plot(time, heat_mid, 'r')
+axes[0].plot(time, heat_mid, 'r', linestyle=':', label="numerical", linewidth=5.00)
+axes[0].plot(time, heat_analytic, label="analytic")
+axes[0].set_title("Result comparison")
 axes[0].set_xlabel('Time (s)')
-axes[0].set_ylabel('Temperature at the midpoint (K)')
-axes[0].set_title("Standard plot")
+axes[0].set_ylabel('Temperature value (K)')
 
-axes[1].semilogy(time, heat_mid, 'b')
+d = heat_analytic - heat_mid
+axes[1].plot(time, d, 'g', linewidth=2)
+axes[1].set_title("Absolute error evolution")
 axes[1].set_xlabel('Time (s)')
-axes[1].set_ylabel('Temperature at the midpoint (K)')
-axes[1].set_title("Semi-logarithmic plot")
-
-fig.tight_layout() 
-#axes.set_title("Forward Euler solution for x(1-x) conditions")
-fig.savefig("Comparison.png")
