@@ -99,9 +99,9 @@ int main(int argc, char* argv[]) {
     double nu = alpha*(del_t/pow(del_x,2));                                             //calculating Courant number
 
     /*----------------------------- Generating vectors with initial conditions ----------------------------------------------------------------------------------------*/
-    vector<double> u_0, u;                                                              //u_0 stores initial heat distribution;
-    for(int j=0; j<N_x+1; j++){                                                         //u stores heat at next full time step;
-        u_0.push_back(sin(M_PI*j*del_x/L));                                             //changed to sinusoid heat distribution     !!!
+    vector<double> u_0, u, u_CN;                                                                //u_0 stores initial heat distribution;
+    for(int j=0; j<N_x+1; j++){                                                                 //u stores heat at next full time step;
+        u_0.push_back(sin(M_PI*j*del_x/L));                                                     //changed to sinusoid heat distribution
      }
 
     /*----------------------------- Generating Identity and Spatial triMatrices using help functions ------------------------------------------------------------------*/
@@ -113,10 +113,11 @@ int main(int argc, char* argv[]) {
     I = MakeIdentityMatrix(N_x);
     A = I+l*nu;                                                                         //Generating A matrix with (v, 1-2v, v)
 
+
     for(double k=0;k<N_t;++k){
         u = A * u_0;                                                                    //Implementing for loop with an overloaded vector-matrix multiplication
         u_0 = u;
-        print_vector(u);                                                                //Printing vector after each loop to be captured by Python      !!!
+        print_vector(u);                                                               //Printing vector after each loop to be captured by Python      !!!
     }
     return 0;
 }
